@@ -1,12 +1,20 @@
 import crop
 import torch
 import os
-import cv2
+from PIL import Image
 from torchvision import transforms
+import argparse
 
-model_classify = torch.load("models\\classify images\\best.pt")
+crop_dir = "crops"
+model_classify = torch.load("models\\classify images\\best.pt", map_location=torch.device('cpu'))
 
-crop.crop()
+# take image name as argument
+parser = argparse.ArgumentParser()
+parser.add_argument("image_name", help="Name of the image to be analysed")
+args = parser.parse_args()
+image_name = args.image_name
+
+crop.crop(img_name=image_name, crop_dir_name=crop_dir)
 
 # run the model on the cropped images and count number of images of each class
 class_count = {0: 0, 1: 0}
@@ -20,10 +28,11 @@ transform = transforms.Compose([        # Defining a variable transforms
  std=[0.229, 0.224, 0.225]      
 )])
 
-for img_name in os.listdir("crops"):
-    im0 = cv2.imread(os.path.join("crops", img_name))
+for img_name in os.listdir(crop_dir):
+    im0 = Image.open(os.path.join(crop_dir, img_name))
     im0 = transform(im0)
-    pred = torch.round(model_classify(im0))
+    output = model_classify(im0.unsqueeze(0))
+    pred = torch.round(output)
     class_count[pred.item()] += 1
 
 print(class_count)
