@@ -1,7 +1,9 @@
 import cv2
 from ultralytics import YOLO
+import os
+import argparse
 
-model = YOLO("models\\shelf detection\\best.pt")
+model = YOLO(os.path.join("models", "object detection", "best.pt"))
 
 def draw_bounding_boxes(image, results):
     
@@ -31,7 +33,11 @@ def draw_bounding_boxes(image, results):
     
 
 while True:
-    frame = cv2.imread("46_QS2817970_AddVisibilityImg-20240423_101925.jpg")
+    args = argparse.ArgumentParser()
+    args.add_argument("image", help="Path to the image to be analysed")
+    if args.parse_args().image is not None:
+        image = args.parse_args().image
+    frame = cv2.imread(image)
     results = model([frame])
     draw_bounding_boxes(frame, results)
     if cv2.waitKey(1) == ord('q'):

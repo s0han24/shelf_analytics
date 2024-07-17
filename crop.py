@@ -3,7 +3,7 @@ import os
 import cv2
 from ultralytics import YOLO
 
-def crop(img_name, crop_dir_name="crops", model_path="models\\object detection\\best.pt"):
+def crop(img_name, crop_dir_name="crops", model_path=os.path.join("models", "object detection", "best.pt")):
     model = YOLO(model_path)
     if not os.path.exists(crop_dir_name):
         os.mkdir(crop_dir_name)

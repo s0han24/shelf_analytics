@@ -6,13 +6,16 @@ from torchvision import transforms
 import argparse
 
 crop_dir = "crops"
-model_classify = torch.load("models\\classify images\\best.pt", map_location=torch.device('cpu'))
+model_classify = torch.load(os.path.join("models", "classify images","best.pt"), map_location=torch.device('cpu'))
 
 # take image name as argument
 parser = argparse.ArgumentParser()
 parser.add_argument("image_name", help="Name of the image to be analysed")
+parser.add_argument("--crop_dir", help="Name of the directory to save cropped images")
 args = parser.parse_args()
 image_name = args.image_name
+if args.crop_dir is not None:
+    crop_dir = args.crop_dir
 
 crop.crop(img_name=image_name, crop_dir_name=crop_dir)
 
@@ -35,7 +38,10 @@ for img_name in os.listdir(crop_dir):
     pred = torch.round(output)
     class_count[pred.item()] += 1
 
-print(class_count[0]/(class_count[1]+class_count[0]))
+print("Number of images of each class:")
+print("Himalayan Products: ", class_count[1])
+print("Non-Himalayan Products: ", class_count[0])
+print(f"{(class_count[1]/(class_count[1]+class_count[0])*100)}% of the images are himalayan products")
 
     
 
