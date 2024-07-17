@@ -35,7 +35,7 @@ for img_name in os.listdir(crop_dir):
     pred = torch.round(output)
     class_count[pred.item()] += 1
 
-print(class_count)
+print(class_count[0]/(class_count[1]+class_count[0]))
 
     
 
