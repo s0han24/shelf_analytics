@@ -8,8 +8,9 @@ def crop(img_name, crop_dir_name="crops", model_path=os.path.join("models", "obj
     if not os.path.exists(crop_dir_name):
         os.mkdir(crop_dir_name)
 
-
-    im0 = cv2.imread(os.path.join(img_name))
+    # img_file is only the last part of image name
+    img_file = img_name.split(os.sep)[-1]
+    im0 = cv2.imread(img_name)
     results = model.predict(im0, show=False)
     boxes = results[0].boxes.xyxy.cpu().tolist()
     if boxes is not None:
@@ -19,5 +20,5 @@ def crop(img_name, crop_dir_name="crops", model_path=os.path.join("models", "obj
 
             crop_obj = im0[int(box[1]) : int(box[3]), int(box[0]) : int(box[2])]
 
-            cv2.imwrite(os.path.join(crop_dir_name, img_name + str(idx) + ".png"), crop_obj)
+            cv2.imwrite(os.path.join(crop_dir_name, img_file + str(idx) + ".png"), crop_obj)
             idx+=1

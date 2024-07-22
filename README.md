@@ -41,3 +41,5 @@
 - proximity.ipynb demonstrates how we can take proximity information into account for classification.
 
 - color-clustering.ipynb shows a way to identify similar products based on color scheme
+
+- object-detection.ipynb shows how to fine tune a YOLO model to detect objects on a shelf
