@@ -1,4 +1,5 @@
 # Shelf Analytics
+View the document "Automated Retail Shelf Analysis.pdf" for project summary
 ## Objective:
 - analysis of shelves in retail stores from image data
 - the main point of analysis was number of products of a particular brand visible on the shelf from the image
